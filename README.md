@@ -1,1 +1,258 @@
-# NexusV1
+# Nexus - Process Manager & DLL Injector
+Descripción General
+Nexus es una aplicación de gestión de procesos y inyección de DLL para Windows. Permite visualizar los procesos en ejecución del sistema, gestionarlos y realizar inyección de bibliotecas dinámicas (DLL) en procesos específicos.
+
+¿Qué es la Inyección de DLL?
+La inyección de DLL (Dynamic Link Library) es una técnica que permite cargar una biblioteca dinámica en el espacio de memoria de un proceso en ejecución. Esto se logra mediante la creación de un hilo remoto dentro del proceso objetivo que ejecuta la función LoadLibrary, cargando así el DLL especificado.
+
+Usos Comunes
+Extensiones de funcionalidad en aplicaciones existentes
+
+Sistemas de plugins y módulos
+
+Depuración y análisis de aplicaciones
+
+Modificaciones en tiempo de ejecución
+
+Características
+Gestión de Procesos
+Listado completo de procesos del sistema
+
+Búsqueda y filtrado de procesos por nombre
+
+Visualización de información detallada (PID, ruta del ejecutable)
+
+Iconos de los procesos
+
+Inyección de DLL
+Selección de proceso objetivo
+
+Selección de archivo DLL mediante explorador de archivos
+
+Verificación de arquitectura (32/64 bits)
+
+Estado detallado de la inyección
+
+Funcionalidades Adicionales
+Menú contextual (click derecho) con opciones avanzadas
+
+Terminar procesos
+
+Suspender/Reanudar procesos
+
+Abrir ubicación del ejecutable
+
+Buscar proceso en línea
+
+Copiar nombre y PID
+
+Estadísticas de CPU y RAM en tiempo real
+
+Cambio entre tema oscuro y claro
+
+Enlaces a Discord y página web oficial
+
+Requisitos del Sistema
+Hardware
+Procesador compatible con x64
+
+2 GB de RAM mínimo
+
+100 MB de espacio en disco
+
+Software
+Windows 10 o superior (64 bits)
+
+DirectX 11
+
+Visual C++ Redistributable 2015-2022
+
+Permisos
+Ejecutar como Administrador: Obligatorio para inyección de DLL en la mayoría de procesos del sistema
+
+Instalación
+Descarga
+Descarga el archivo ejecutable desde la página oficial o desde el repositorio de lanzamientos.
+
+Ejecución
+Haz clic derecho en el archivo Nexus.exe
+
+Selecciona "Ejecutar como administrador"
+
+Espera a que la aplicación cargue completamente
+
+Compilación desde código fuente
+Requisitos para compilar
+Visual Studio 2022 o superior
+
+CMake 3.16 o superior
+
+Git
+
+Pasos
+bash
+git clone https://github.com/tu-usuario/nexus.git
+cd nexus
+mkdir build && cd build
+cmake ..
+cmake --build . --config Release
+Uso
+1. Selección de Proceso
+La lista de procesos se muestra en el panel izquierdo
+
+Usa el campo de búsqueda para filtrar por nombre
+
+Haz clic en cualquier proceso para seleccionarlo
+
+El panel derecho mostrará los detalles del proceso seleccionado
+
+2. Inyección de DLL
+Selecciona un proceso de la lista
+
+Haz clic en el botón "Inyectar" o usa el menú contextual
+
+En el diálogo que aparece, haz clic en "Buscar DLL..."
+
+Navega y selecciona el archivo DLL que deseas inyectar
+
+Haz clic en "INYECTAR" para iniciar la inyección
+
+El estado de la operación se mostrará en el diálogo
+
+3. Menú Contextual
+Haz clic derecho sobre cualquier proceso en la lista para acceder a:
+
+Terminar proceso: Finaliza el proceso seleccionado
+
+Terminar árbol: Finaliza el proceso y sus procesos hijos
+
+Suspender proceso: Pausa la ejecución del proceso
+
+Reanudar proceso: Reanuda la ejecución del proceso
+
+Abrir ubicación: Abre la carpeta del ejecutable en el Explorador
+
+Buscar en línea: Busca información del proceso en Google
+
+Inyectar DLL: Abre el diálogo de inyección
+
+Copiar nombre: Copia el nombre del proceso al portapapeles
+
+Copiar PID: Copia el PID del proceso al portapapeles
+
+4. Estadísticas del Sistema
+El panel muestra el uso de CPU y RAM en tiempo real
+
+Las barras de progreso indican el porcentaje de uso
+
+Se actualizan automáticamente cada 2 segundos
+
+5. Cambio de Tema
+El botón "Modo Claro/Oscuro" alterna entre temas
+
+La interfaz se adapta automáticamente
+
+Arquitectura
+Tecnologías Utilizadas
+ImGui: Interfaz gráfica de usuario
+
+DirectX 11: Renderizado de la interfaz
+
+Win32 API: Gestión de procesos y ventanas
+
+C++17: Lenguaje de programación
+
+Componentes Principales
+1. Gestor de Procesos
+Enumeración de procesos usando Toolhelp32Snapshot
+
+Obtención de iconos usando SHGetFileInfo
+
+Almacenamiento en caché de iconos para rendimiento
+
+2. Motor de Inyección
+OpenProcess con permisos adecuados
+
+VirtualAllocEx para asignación de memoria remota
+
+WriteProcessMemory para escribir la ruta del DLL
+
+CreateRemoteThread para ejecutar LoadLibrary
+
+3. Interfaz Gráfica
+Ventana sin bordes con esquinas redondeadas
+
+Efecto glassmorphism
+
+Animación de estrellas en fondo
+
+Diseño responsivo
+
+Limitaciones
+Solo funciona en sistemas Windows de 64 bits
+
+Requiere permisos de administrador para inyección
+
+No puede inyectar DLL en procesos protegidos por el sistema
+
+El DLL debe ser compatible con la arquitectura del proceso objetivo
+
+Seguridad y Buenas Prácticas
+Para Usuarios
+Siempre ejecuta como administrador
+
+Verifica el origen de los DLLs antes de inyectarlos
+
+No inyectes DLLs en procesos críticos del sistema a menos que sepas lo que estás haciendo
+
+Para Desarrolladores
+Los DLLs inyectados deben ser seguros y estables
+
+Maneja correctamente la liberación de recursos
+
+Valida todas las entradas del usuario
+
+Utiliza las funciones de Windows API correctamente
+
+Solución de Problemas
+Error: "No se pudo abrir el proceso"
+Asegúrate de ejecutar como administrador
+
+El proceso puede estar protegido por el sistema
+
+Error: "Proceso 32-bit (DLL de 64-bit)"
+La arquitectura del DLL debe coincidir con la del proceso objetivo
+
+Usa un DLL de 32 bits para procesos de 32 bits
+
+Usa un DLL de 64 bits para procesos de 64 bits
+
+Error: "El archivo DLL no existe"
+Verifica que la ruta del DLL sea correcta
+
+Asegúrate de que el archivo tenga la extensión .dll
+
+El icono no aparece en la barra de tareas
+La aplicación usa WS_OVERLAPPEDWINDOW para mostrar el icono
+
+Reinicia el explorador de Windows si es necesario
+
+Enlaces
+Discord Oficial: https://discord.gg/XBSPRBAXeJ
+
+Página Web: https://proyect-nexus.vercel.app/
+
+Repositorio GitHub: [URL del repositorio]
+
+Licencia
+Este proyecto está licenciado bajo MIT License.
+
+Créditos y Contribuciones
+ImGui por Omar Cornut
+
+Process Manager basado en técnicas de enumeración de procesos de Windows
+
+Iconos y diseño visual por el equipo de Nexus
+
+Contacto
+Para reportar bugs o sugerir mejoras, únete a nuestro servidor de Discord o visita nuestra página web.
