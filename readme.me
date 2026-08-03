@@ -1,0 +1,50 @@
+# Nexus UI — plantilla visual
+
+Recreación **solo del diseño** del panel de la imagen que mandaste: pantalla de
+carga + ventana principal con dos paneles (lista a la izquierda, detalle a la
+derecha), en azul, con "N" de Nexus.
+
+**Esto NO lee procesos, NO carga DLLs y NO inyecta nada en otros programas.**
+Todos los botones ("Explorar", "Actualizar", "Aplicar") están vacíos, listos
+para que conectes ahí tu propia lógica (la que sea que necesites).
+
+## Qué incluye
+
+- `RenderSplash()` — pantalla de carga inicial (logo, "N E X U S", barra de progreso).
+- `RenderMain()` — ventana principal:
+  - Barra de título propia (arrastrable, con minimizar / maximizar / cerrar).
+  - Panel izquierdo **"Elementos"**: buscador + estado de selección + lista vacía.
+  - Panel derecho **"Detalles"**: tarjeta de info + dos botones + un botón grande de acción.
+  - Barra de estado inferior.
+- `theme.h/.cpp` — toda la paleta de colores y el redondeado en un solo lugar.
+
+## Cómo compilarlo (Windows + Visual Studio)
+
+1. Instala **Visual Studio 2022** con el workload "Desarrollo de escritorio con C++".
+2. Necesitas CMake (viene incluido en Visual Studio, o instálalo aparte).
+3. Desde la carpeta del proyecto:
+   ```bat
+   cmake -B build -G "Visual Studio 17 2022" -A x64
+   cmake --build build --config Release
+   ```
+   La primera vez, CMake va a descargar Dear ImGui automáticamente (necesitas internet).
+4. El ejecutable queda en `build\Release\NexusUI.exe`.
+
+También puedes abrir la carpeta directamente en Visual Studio ("Abrir carpeta")
+si tienes el componente de CMake instalado — VS detecta el `CMakeLists.txt` solo.
+
+## Cómo personalizarlo
+
+- **Colores / redondeado** → `src/theme.cpp` (todo está en `NexusTheme::Apply`).
+- **Textos del panel izquierdo/derecho** → funciones `DrawItemsPanel` / `DrawDetailsPanel` en `src/main.cpp`.
+- **Agregar filas a la lista** → en `DrawItemsPanel`, rellena el `std::vector<std::string> items`.
+- **Qué hacen los botones** → cada `if (ImGui::Button(...)) { /* aquí */ }` en `DrawDetailsPanel`.
+- **Tamaño de ventana** → constantes `kSplashW/H` y `kMainW/H` al inicio de `main.cpp`.
+
+## Nota
+
+Este código no se pudo compilar/probar en este entorno porque usa Win32 +
+DirectX11, que solo existen en Windows. Está escrito siguiendo el patrón
+estándar y muy probado de los ejemplos oficiales de Dear ImGui
+(`example_win32_directx11`), así que debería compilar sin drama en Visual
+Studio — pero avísame si te sale algún error al compilar y lo revisamos.
